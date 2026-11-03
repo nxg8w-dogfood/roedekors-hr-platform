@@ -1,0 +1,176 @@
+{
+  "version": 1,
+  "project": "R\u00F8dekors HR Platform",
+  "level": "elevated",
+  "controls": [
+    {
+      "id": "sec-ropa",
+      "pillar": "security",
+      "name": "Record of processing and a lawful basis",
+      "checks": [
+        {
+          "kind": "attest",
+          "target": "ropa"
+        }
+      ]
+    },
+    {
+      "id": "sec-threat-model",
+      "pillar": "security",
+      "name": "Threat model agreed before the first release",
+      "checks": [
+        {
+          "kind": "fileExists",
+          "target": "docs/threat-model.md"
+        }
+      ]
+    },
+    {
+      "id": "sec-secrets",
+      "pillar": "security",
+      "name": "Secrets in Key Vault, never in the repository",
+      "checks": [
+        {
+          "kind": "repoSetting",
+          "target": "secret-scanning"
+        },
+        {
+          "kind": "repoSetting",
+          "target": "push-protection"
+        }
+      ]
+    },
+    {
+      "id": "sec-tls",
+      "pillar": "security",
+      "name": "TLS 1.2 or better on every hop",
+      "checks": [
+        {
+          "kind": "attest",
+          "target": "tls"
+        }
+      ]
+    },
+    {
+      "id": "sec-authz",
+      "pillar": "security",
+      "name": "Authorisation enforced on the server",
+      "checks": [
+        {
+          "kind": "attest",
+          "target": "authz"
+        }
+      ]
+    },
+    {
+      "id": "sec-patching",
+      "pillar": "security",
+      "name": "Dependencies patched inside the agreed window",
+      "checks": [
+        {
+          "kind": "repoSetting",
+          "target": "vulnerability-alerts"
+        }
+      ]
+    },
+    {
+      "id": "g-readme",
+      "pillar": "guardrails",
+      "name": "README with run instructions",
+      "checks": [
+        {
+          "kind": "fileExists",
+          "target": "README.md"
+        }
+      ]
+    },
+    {
+      "id": "g-adr",
+      "pillar": "guardrails",
+      "name": "Architecture decisions recorded",
+      "checks": [
+        {
+          "kind": "fileExists",
+          "target": "docs/adr/"
+        }
+      ]
+    },
+    {
+      "id": "g-tests",
+      "pillar": "guardrails",
+      "name": "Automated tests run on every pull request",
+      "checks": [
+        {
+          "kind": "fileContains",
+          "target": ".github/workflows/ci.yml:test"
+        }
+      ]
+    },
+    {
+      "id": "g-branch-protection",
+      "pillar": "guardrails",
+      "name": "Protected default branch",
+      "checks": [
+        {
+          "kind": "repoSetting",
+          "target": "branch-protection"
+        }
+      ]
+    },
+    {
+      "id": "g-ci-build",
+      "pillar": "guardrails",
+      "name": "CI builds the project from a clean checkout",
+      "checks": [
+        {
+          "kind": "fileExists",
+          "target": ".github/workflows/ci.yml"
+        }
+      ]
+    },
+    {
+      "id": "g-no-secrets",
+      "pillar": "guardrails",
+      "name": "No secrets in source control",
+      "checks": [
+        {
+          "kind": "repoSetting",
+          "target": "push-protection"
+        }
+      ]
+    },
+    {
+      "id": "g-dep-scanning",
+      "pillar": "guardrails",
+      "name": "Dependency and vulnerability scanning",
+      "checks": [
+        {
+          "kind": "repoSetting",
+          "target": "vulnerability-alerts"
+        }
+      ]
+    },
+    {
+      "id": "g-codeowners",
+      "pillar": "guardrails",
+      "name": "Real code owners",
+      "checks": [
+        {
+          "kind": "repoSetting",
+          "target": "codeowners-real"
+        }
+      ]
+    },
+    {
+      "id": "g-license",
+      "pillar": "guardrails",
+      "name": "License and ownership declared",
+      "checks": [
+        {
+          "kind": "fileExists",
+          "target": "LICENSE"
+        }
+      ]
+    }
+  ]
+}

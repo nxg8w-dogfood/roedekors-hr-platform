@@ -1,0 +1,27 @@
+name: Deploy
+
+# Every environment is deployed by the pipeline; production sits behind the GitHub Environment's
+# required reviewers. Configure the environments and their OIDC credentials before first use.
+on:
+  workflow_dispatch:
+    inputs:
+      environment:
+        type: choice
+        options: [dev, prod]
+        default: dev
+
+permissions:
+  id-token: write
+  contents: read
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment: ${{ inputs.environment }}
+    steps:
+      - uses: actions/checkout@v4
+      # Inputs reach the shell through env, never interpolated into the script.
+      - name: Deploy
+        env:
+          TARGET: ${{ inputs.environment }}
+        run: echo "Add the deployment steps for $TARGET here."

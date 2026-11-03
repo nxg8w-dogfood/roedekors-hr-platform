@@ -1,0 +1,32 @@
+name: launchpad-verify
+
+# Maintained by Nexus Launchpad — changes here are overwritten by the next run.
+on:
+  pull_request:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  launchpad-verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Verify file-based controls
+        shell: bash
+        run: |
+          set -euo pipefail
+          failed=0
+          while IFS=$'\t' read -r control kind target; do
+            case "$kind" in
+              fileExists)
+                if [ -e "$target" ]; then echo "pass  $control  $target"; else echo "::error::$control — missing $target"; failed=1; fi ;;
+              fileContains)
+                file="${target%%:*}"; pattern="${target#*:}"
+                if [ -f "$file" ] && grep -qiF -- "$pattern" "$file"; then echo "pass  $control  $file contains '$pattern'"; else echo "::error::$control — $file does not contain '$pattern'"; failed=1; fi ;;
+            esac
+          done < <(jq -r '.controls[] | .id as $id | .checks[] | select(.kind == "fileExists" or .kind == "fileContains") | [$id, .kind, .target] | @tsv' .launchpad/checks.json)
+          exit "$failed"
