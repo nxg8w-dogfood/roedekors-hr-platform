@@ -19,7 +19,7 @@ jobs:
     runs-on: ubuntu-latest
     environment: ${{ inputs.environment }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       # Inputs reach the shell through env, never interpolated into the script.
       - name: Deploy
         env:
